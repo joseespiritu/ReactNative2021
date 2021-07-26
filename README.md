@@ -8,3 +8,4 @@ Repositorio dedicado a aprender React Native CLI
 
 ## Links:
 * Componentes Básicos: https://reactnative.dev/docs/components-and-apis
+* Shadow Creator: https://ethercreative.github.io/react-native-shadow-generator/

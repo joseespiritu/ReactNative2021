@@ -7,11 +7,13 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android:emulator": "npx react-native run-android deviceID=emulator-5554"
   },
   "dependencies": {
     "react": "17.0.2",
-    "react-native": "0.66.4"
+    "react-native": "0.66.4",
+    "react-native-date-picker": "^4.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

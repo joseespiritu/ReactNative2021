@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import {SafeAreaView, Text, StyleSheet, Pressable, Modal} from 'react-native';
+import Formulario from './src/components/Formulario';
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const nuevaCitaHandler = () => {
-    console.log('diste click....');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,14 +12,15 @@ const App = () => {
         <Text style={styles.tituloBold}>Veterinaria</Text>
       </Text>
       <Pressable
-        onPress={() => setModalVisible(true)}
+        onPress={() => setModalVisible(!modalVisible)}
         style={styles.btnNuevaCita}>
         <Text style={styles.btnTextoNuevaCita}>Nueva Cita</Text>
       </Pressable>
 
-      <Modal animationType="slide" visible={modalVisible}>
-        <Text>Desde Modal</Text>
-      </Modal>
+      <Formulario
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </SafeAreaView>
   );
 };

@@ -9,10 +9,16 @@ import {
   ScrollView,
   Pressable,
   StatusBar,
+  Alert,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const Formulario = ({modalVisible, setModalVisible}) => {
+const Formulario = ({
+  modalVisible,
+  setModalVisible,
+  setPacientes,
+  pacientes,
+}) => {
   const [paciente, setPaciente] = useState('');
   const [propietario, setPropietario] = useState('');
   const [email, setEmail] = useState('');
@@ -23,6 +29,32 @@ const Formulario = ({modalVisible, setModalVisible}) => {
   const emailRef = useRef();
   const telefonoRef = useRef();
   const sintomasRef = useRef();
+
+  const handleCita = () => {
+    // Validar
+    if ([paciente, propietario, email, fecha, sintomas].includes('')) {
+      Alert.alert('Error', 'Todos los campos son obligatorios');
+      return;
+    }
+    const nuevoPaciente = {
+      paciente,
+      propietario,
+      email,
+      telefono,
+      fecha,
+      sintomas,
+    };
+
+    setPacientes([...pacientes, nuevoPaciente]);
+    setModalVisible(!modalVisible);
+
+    setPaciente('');
+    setPropietario('');
+    setEmail('');
+    setTelefono('');
+    setFecha(new Date());
+    setSintomas();
+  };
 
   return (
     <Modal animationType="slide" visible={modalVisible}>
@@ -130,6 +162,10 @@ const Formulario = ({modalVisible, setModalVisible}) => {
               numberOfLines={4}
             />
           </View>
+
+          <Pressable style={styles.btnNuevaCita} onPress={handleCita}>
+            <Text style={styles.btnNuevaCitaTexto}>Agregar Paciente</Text>
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -188,6 +224,20 @@ const styles = StyleSheet.create({
   fechaContenedor: {
     backgroundColor: '#fff',
     borderRadius: 10,
+  },
+  btnNuevaCita: {
+    marginVertical: 50,
+    backgroundColor: '#F59E0B',
+    paddingVertical: 15,
+    marginHorizontal: 30,
+    borderRadius: 10,
+  },
+  btnNuevaCitaTexto: {
+    textAlign: 'center',
+    color: '#5827A4',
+    textTransform: 'uppercase',
+    fontWeight: '900',
+    fontSize: 16,
   },
 });
 

@@ -8,7 +8,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android:emulator": "npx react-native run-android deviceID=emulator-5554"
+    "android:emulator": "npx react-native run-android deviceID=emulator-5554",
+    "android:moto": "npx react-native run-android deviceID=ZY227DCMZS",
+    "android desk": "emulator -list-avds 'Pixel_3a_XL_API_30' && npx react-native run-android deviceID=emulator-5554"
   },
   "dependencies": {
     "react": "17.0.2",

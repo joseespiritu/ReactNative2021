@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   Modal,
   Text,
@@ -18,7 +18,9 @@ const Formulario = ({
   setModalVisible,
   setPacientes,
   pacientes,
+  paciente: pacienteObj,
 }) => {
+  const [id, setId] = useState('');
   const [paciente, setPaciente] = useState('');
   const [propietario, setPropietario] = useState('');
   const [email, setEmail] = useState('');
@@ -29,6 +31,19 @@ const Formulario = ({
   const emailRef = useRef();
   const telefonoRef = useRef();
   const sintomasRef = useRef();
+
+  useEffect(() => {
+    if (Object.keys(pacienteObj).length > 0) {
+      console.log(pacienteObj);
+      setId(pacienteObj.id);
+      setPaciente(pacienteObj.paciente);
+      setPropietario(pacienteObj.propietario);
+      setEmail(pacienteObj.email);
+      setTelefono(pacienteObj.telefono);
+      setFecha(pacienteObj.fecha);
+      setSintomas(pacienteObj.sintomas);
+    }
+  }, []);
 
   const handleCita = () => {
     // Validar
@@ -218,6 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
+    color: '#666',
   },
   sintomasInput: {
     height: 100,

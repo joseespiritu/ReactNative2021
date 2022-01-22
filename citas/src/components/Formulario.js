@@ -19,6 +19,7 @@ const Formulario = ({
   setPacientes,
   pacientes,
   paciente: pacienteObj,
+  setPaciente: setPacienteApp,
 }) => {
   const [id, setId] = useState('');
   const [paciente, setPaciente] = useState('');
@@ -43,7 +44,7 @@ const Formulario = ({
       setFecha(pacienteObj.fecha);
       setSintomas(pacienteObj.sintomas);
     }
-  }, []);
+  }, [pacienteObj]);
 
   const handleCita = () => {
     // Validar
@@ -51,8 +52,9 @@ const Formulario = ({
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
+
+    // Revisar si es un registro nuevo o es edicion
     const nuevoPaciente = {
-      id: Date.now(),
       paciente,
       propietario,
       email,
@@ -61,15 +63,28 @@ const Formulario = ({
       sintomas,
     };
 
-    setPacientes([...pacientes, nuevoPaciente]);
-    setModalVisible(!modalVisible);
+    if (id) {
+      // Editando
+      nuevoPaciente.id = id;
+      const pacientesActualizados = pacientes.map(pacienteState =>
+        pacienteState.id === nuevoPaciente.id ? nuevoPaciente : pacienteState,
+      );
+      setPacientes(pacientesActualizados);
+      setPacienteApp({});
+    } else {
+      // Registrando
+      nuevoPaciente.id = Date.now();
+      setPacientes([...pacientes, nuevoPaciente]);
+    }
 
+    setModalVisible(!modalVisible);
+    setId('');
     setPaciente('');
     setPropietario('');
     setEmail('');
     setTelefono('');
     setFecha(new Date());
-    setSintomas();
+    setSintomas('');
   };
 
   return (
@@ -78,13 +93,23 @@ const Formulario = ({
       <SafeAreaView style={styles.contenido}>
         <ScrollView>
           <Text style={styles.titulo}>
-            Nueva {''}
+            {pacienteObj.id ? 'Editar' : 'Nueva'} {''}
             <Text style={styles.tituloBold}>Cita</Text>
           </Text>
 
           <Pressable
             style={styles.btnCancelar}
-            onLongPress={() => setModalVisible(!modalVisible)}>
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              setPacienteApp({});
+              setId('');
+              setPaciente('');
+              setPropietario('');
+              setEmail('');
+              setTelefono('');
+              setFecha(new Date());
+              setSintomas('');
+            }}>
             <Text style={styles.btnCancelarTexto}>X Cancelar</Text>
           </Pressable>
 
@@ -180,7 +205,9 @@ const Formulario = ({
           </View>
 
           <Pressable style={styles.btnNuevaCita} onPress={handleCita}>
-            <Text style={styles.btnNuevaCitaTexto}>Agregar Paciente</Text>
+            <Text style={styles.btnNuevaCitaTexto}>
+              {pacienteObj.id ? 'Editar' : 'Agregar'} Paciente
+            </Text>
           </Pressable>
         </ScrollView>
       </SafeAreaView>

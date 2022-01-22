@@ -6,14 +6,18 @@ import {
   Pressable,
   FlatList,
   Alert,
+  Modal,
+  StatusBar,
 } from 'react-native';
 import Formulario from './src/components/Formulario';
 import Paciente from './src/components/Paciente';
+import InformacionPaciente from './src/components/InformacionPaciente';
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [pacientes, setPacientes] = useState([]);
   const [paciente, setPaciente] = useState({});
+  const [modalPaciente, setModalPaciente] = useState(false);
 
   const pacienteEditar = id => {
     const pacienteEditar = pacientes.filter(paciente => paciente.id === id);
@@ -39,8 +43,13 @@ const App = () => {
     );
   };
 
+  const cerrarModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'#F3F4F6'} barStyle="dark-content" />
       <Text style={styles.titulo}>
         Administrador de citas {''}
         <Text style={styles.tituloBold}>Veterinaria</Text>
@@ -63,22 +72,34 @@ const App = () => {
               <Paciente
                 item={item}
                 setModalVisible={setModalVisible}
+                setPaciente={setPaciente}
                 pacienteEditar={pacienteEditar}
                 pacienteEliminar={pacienteEliminar}
+                setModalPaciente={setModalPaciente}
               />
             );
           }}
         />
       )}
 
-      <Formulario
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        pacientes={pacientes}
-        setPacientes={setPacientes}
-        paciente={paciente}
-        setPaciente={setPaciente}
-      />
+      {modalVisible && (
+        <Formulario
+          cerrarModal={cerrarModal}
+          modalVisible={modalVisible}
+          pacientes={pacientes}
+          setPacientes={setPacientes}
+          paciente={paciente}
+          setPaciente={setPaciente}
+        />
+      )}
+
+      <Modal visible={modalPaciente} animationType="fade">
+        <InformacionPaciente
+          paciente={paciente}
+          setPaciente={setPaciente}
+          setModalPaciente={setModalPaciente}
+        />
+      </Modal>
     </SafeAreaView>
   );
 };

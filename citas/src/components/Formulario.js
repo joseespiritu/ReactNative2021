@@ -15,8 +15,8 @@ import DatePicker from 'react-native-date-picker';
 
 const Formulario = ({
   modalVisible,
-  setModalVisible,
   setPacientes,
+  cerrarModal,
   pacientes,
   paciente: pacienteObj,
   setPaciente: setPacienteApp,
@@ -77,7 +77,7 @@ const Formulario = ({
       setPacientes([...pacientes, nuevoPaciente]);
     }
 
-    setModalVisible(!modalVisible);
+    cerrarModal();
     setId('');
     setPaciente('');
     setPropietario('');
@@ -89,7 +89,7 @@ const Formulario = ({
 
   return (
     <Modal animationType="slide" visible={modalVisible}>
-      <StatusBar backgroundColor={'#6D28D9'} />
+      <StatusBar backgroundColor={'#6D28D9'} barStyle="light-content" />
       <SafeAreaView style={styles.contenido}>
         <ScrollView>
           <Text style={styles.titulo}>
@@ -100,7 +100,7 @@ const Formulario = ({
           <Pressable
             style={styles.btnCancelar}
             onPress={() => {
-              setModalVisible(!modalVisible);
+              cerrarModal();
               setPacienteApp({});
               setId('');
               setPaciente('');

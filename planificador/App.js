@@ -45,8 +45,8 @@ function App() {
       </View>
 
       {modal && (
-        <Modal animationType="slide" visible={modal}>
-          <FormularioGasto />
+        <Modal animationType="slide" visible={modal} onRequestClose={!modal}>
+          <FormularioGasto setModal={setModal} />
         </Modal>
       )}
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 110,
+    top: 10,
     right: 20,
   },
 });

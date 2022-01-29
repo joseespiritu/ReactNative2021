@@ -22,6 +22,7 @@ function App() {
   const [presupuesto, setPresupuesto] = useState(0);
   const [gastos, setGastos] = useState([]);
   const [modal, setModal] = useState(false);
+  const [gasto, setGasto] = useState({});
 
   const handleNuevoPresupuesto = presupuesto => {
     if (Number(presupuesto) > 0) {
@@ -32,15 +33,45 @@ function App() {
   };
 
   const handleGasto = gasto => {
-    if (Object.values(gasto).includes('')) {
+    if ([gasto.nombre, gasto.categoria, gasto.cantidad].includes('')) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
 
-    // Añadir un nuevo gasto al state
-    gasto.id = generarId();
-    setGastos([...gastos, gasto]);
+    if (gasto.id) {
+      const gastosActualizados = gastos.map(gastoState =>
+        gastoState.id === gasto.id ? gasto : gastoState,
+      );
+      setGastos(gastosActualizados);
+    } else {
+      // Añadir un nuevo gasto al state
+      gasto.id = generarId();
+      gasto.fecha = Date.now();
+      setGastos([...gastos, gasto]);
+    }
+
     setModal(!modal);
+  };
+
+  const eliminarGasto = id => {
+    Alert.alert(
+      '¿Deseas eliminar este gasto?',
+      'Un gasto eliminado no se puede recuperar',
+      [
+        {text: 'No', style: 'cancel'},
+        {
+          text: 'Si, Eliminar',
+          onPress: () => {
+            const gastosActualizados = gastos.filter(
+              gastoState => gastoState.id !== id,
+            );
+            setGastos(gastosActualizados);
+            setModal(!modal);
+            setGasto({});
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -60,17 +91,29 @@ function App() {
           )}
         </View>
 
-        {isValidPresupuesto && <ListadoGastos gastos={gastos} />}
+        {isValidPresupuesto && (
+          <ListadoGastos
+            setModal={setModal}
+            setGasto={setGasto}
+            gastos={gastos}
+          />
+        )}
       </ScrollView>
 
       {modal && (
         <Modal animationType="slide" visible={modal} onRequestClose={!modal}>
-          <FormularioGasto setModal={setModal} handleGasto={handleGasto} />
+          <FormularioGasto
+            setModal={setModal}
+            gasto={gasto}
+            setGasto={setGasto}
+            handleGasto={handleGasto}
+            eliminarGasto={eliminarGasto}
+          />
         </Modal>
       )}
 
       {isValidPresupuesto && (
-        <Pressable onPress={() => setModal(!modal)}>
+        <Pressable sytle={styles.pressable} onPress={() => setModal(!modal)}>
           <Image
             style={styles.imagen}
             source={require('./src/img/nuevo-gasto.png')}
@@ -90,12 +133,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#3B82F6',
     minHeight: 400,
   },
-  imagen: {
+  pressable: {
     width: 60,
     height: 60,
     position: 'absolute',
     bottom: 40,
     right: 30,
+  },
+  imagen: {
+    width: 60,
+    height: 60,
   },
 });
 

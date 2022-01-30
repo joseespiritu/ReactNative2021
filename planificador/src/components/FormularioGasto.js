@@ -45,13 +45,15 @@ const FormularioGasto = ({
           <Text style={styles.btnTexto}>Cancelar</Text>
         </Pressable>
 
-        <Pressable
-          onPress={() => {
-            eliminarGasto(id);
-          }}
-          style={[styles.btn, styles.btnEliminar]}>
-          <Text style={styles.btnTexto}>Eliminar</Text>
-        </Pressable>
+        {!!id && (
+          <Pressable
+            onPress={() => {
+              eliminarGasto(id);
+            }}
+            style={[styles.btn, styles.btnEliminar]}>
+            <Text style={styles.btnTexto}>Eliminar</Text>
+          </Pressable>
+        )}
       </View>
 
       <View style={styles.formulario}>

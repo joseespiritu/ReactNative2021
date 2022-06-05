@@ -15,8 +15,8 @@ export const Navigation = () => {
             }
         }}
     >
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="DetailScreen" component={DetailScreen} />
+      <Stack.Screen name="HomeScreen" options={{headerShown: false}} component={HomeScreen} />
+      <Stack.Screen name="DetailScreen" options={{headerShown: false}} component={DetailScreen} />
     </Stack.Navigator>
   );
 }

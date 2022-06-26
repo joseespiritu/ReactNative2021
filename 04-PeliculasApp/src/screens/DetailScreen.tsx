@@ -1,9 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackProps } from '../navigation/Navigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ScrollView } from 'react-native-gesture-handler';
-/* import Icon from 'react-native-vector-icons/Ionicons'; */
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useMovieDetails } from '../hooks/useMovieDetails';
 import { MovieDetails } from '../components/MovieDetails';
 
@@ -37,6 +37,19 @@ export const DetailScreen = ({ navigation, route }: Props) => {
           ? <ActivityIndicator size={35} color='grey' style={{ marginTop: 20 }} />
           : <MovieDetails movieFull={movieFull!} cast={cast} />
       }
+
+      {/* Boton para cerrar */}
+      <View style={styles.backBottom}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+        >
+          <Icon 
+            color={'black'} 
+            name={'arrow-back-outline'} 
+            size={40}
+          />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   )
 }
@@ -76,5 +89,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold'
+  },
+  backBottom: {
+    position: 'absolute',
+    zIndex: 999,
+    elevation: 9,
+    top: 30,
+    left: 10,
+    backgroundColor: 'white',
+    borderRadius: 100,
+    padding: 5
   }
 });

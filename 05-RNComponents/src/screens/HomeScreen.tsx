@@ -1,11 +1,37 @@
-import React from 'react'
-import { Text, View } from 'react-native';
-import Icon from "react-native-vector-icons/Ionicons";
+import React from 'react';
+import { FlatList, View } from 'react-native';
+
+import { styles } from '../theme/appTheme';
+import { FlatListMenuItem } from '../components/FlatListMenuItem';
+import { menuItems } from '../data/MenuItems';
+import { HeaderTitle } from '../components/HeaderTitle';
 
 export const HomeScreen = () => {
-  return (
-    <View>
-        <Icon name='star-outline' size={50} color='black'/>
-    </View>
-  )
-}
+
+    const itemSeparator = () => {
+        return (
+            <View
+                style={{
+                    borderBottomWidth: 1,
+                    opacity: 0.4,
+                    marginVertical: 8
+                }}
+            />
+        );
+    };
+
+    return (
+        <View style={{ flex: 1, ...styles.globalMargin }}>
+
+            <FlatList
+                data={menuItems}
+                renderItem={ ({ item }) => <FlatListMenuItem menuItem={item} /> }
+                keyExtractor={ (item) => item.name }
+                ListHeaderComponent={ () => <HeaderTitle title='Opciones de menú' /> }
+                ItemSeparatorComponent={ () => itemSeparator() }
+            />
+
+        </View>
+    );
+};
+
